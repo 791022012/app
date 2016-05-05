@@ -99,6 +99,8 @@
             iphoneVersion = @"ipad";
         }
         
+        [user setUserInfo:@"iphoneversion" value:@"6"];//模拟器测试
+        
         self.callMethod = @"getMainPic";
         [self soap:@"ExecSqlService" methodName:@"getPicDir" fields:@"<func_mode>FUNC01</func_mode>"];
         
@@ -698,7 +700,8 @@
             NSLog(@"error:%@",error);
         }
         if(self.logInfo != nil) {
-            NSString *inputs = [[NSString alloc] initWithFormat:@"<%@>%@</%@><%@>%@</%@>",@"username",[self.logInfo objectForKey:@"username"],@"username",@"password",[self.logInfo objectForKey:@"password"],@"password"];
+            NSString *inputs = [[NSString alloc] initWithFormat:@"<%@>%@</%@><%@>%@</%@><%@>%@</%@>",@"username",[self.logInfo objectForKey:@"username"],@"username",@"password",[self.logInfo objectForKey:@"password"],@"password"
+                                ,@"roleid",[self.logInfo objectForKey:@"roleid"],@"roleid"];
             [self soap:@"LoginService" methodName:@"doLogin" fields:inputs];
         }
         return NO;

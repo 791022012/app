@@ -7,11 +7,23 @@
 <meta name="format-detection" content="telephone=no">
 <title>途易行</title>
 <link href="caozuoshuoming.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="jquery-2.1.0.js"></script>
+<script type="text/javascript" src="X.js"></script>
+<script type="text/javascript">
+    //判断是否从main.html跳入
+    function toUrl(){
+        var tourl=X.getUrlToValues('html');
+        if(tourl=='null') window.location.href="Integral.html";
+        else window.location.href="main.html";
+    }
+    
+</script>
+
 </head>
 
 <body>
 <div class="vehicle_top">
-  <div class="vehicle_back"><a href="Integral.html"><img src="arrow.png" width="30" height="30" longdesc="arrow.png"></a></div>
+  <div class="vehicle_back"><a href="javascript:void(0)" onclick="toUrl();"> <img src="arrow.png" width="30" height="30" longdesc="arrow.png"></a></div>
   <div class="vehicle_home">
    <a href="main.html">
  	 <div><img src="tab_weixin_normal.png"></div>

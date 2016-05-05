@@ -32,6 +32,7 @@ function login(){
 	var data = {};
 	data.username = $('input[name="username"]').val();
 	data.password = $('input[name="password"]').val();
+    data.roleid = 'ROLE_DRIVER';
 	data.rememberflag = $('input[type="checkbox"]').is(':checked');
 	if(X.isEmpty(X.html.getInputs())){
 		var inputs = X.html.getInputs();
