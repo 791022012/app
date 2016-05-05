@@ -13,13 +13,6 @@
 	$(function() {
 		X.getWebservice();
 	});
-    //判断是否从main.html跳入
-    function toUrl(){
-        var tourl=X.getUrlToValues('html');
-        if(tourl=='null') window.location.href="Integral.html";
-        else window.location.href="main.html";
-    }
-
 	function doCommit() {
 		if (X.isEmpty($('input[name="ip"]').val())) {
 			X.dialog('请输入IP地址');
@@ -60,7 +53,7 @@
 	<!--头部-->
 	<div class="vehicle_top">
 		<div class="vehicle_back">
-			<a href="javascript:void(0)" onclick="toUrl();"><img src="arrow.png" width="30"
+			<a href="Integral.html"><img src="arrow.png" width="30"
 				height="30" longdesc="arrow.png"></a>
 		</div>
 		<div>应用服务</div>

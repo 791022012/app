@@ -48,7 +48,8 @@
       
       
       
-		$("#dianji_CityList").text(X.isEmpty(X.cookie.get('cityname')) ? '' : X.cookie.get('cityname'));
+		//$("#dianji_CityList").text(X.isEmpty(X.cookie.get('cityname')) ? '' : X.cookie.get('cityname'));
+       // $("#dianji_CityList").text('城市');
 		getGoods();
 	});
 	function getGoods(){
@@ -56,9 +57,11 @@
 		var data = {};
 		data.USER_ID = X.cookie.get('username');
 		data.ROLE_ID = X.cookie.get('role_id');
-		data.CITY = $('#dianji_CityList').text();
+        data.ROWNUMBER ＝'0';
+		if($('#dianji_CityList').text()!='城市')data.CITY = $('#dianji_CityList').text();
 		X.html.setOverlay();
 		X.soap(data, 'GoodsPublishService', 'getGoods');
+        //
 	}
 	function resultList(jsonResult) {
         if(X.html.connError(jsonResult)) return;
@@ -181,7 +184,7 @@
 		</div>
         <div class="vehicle_home">
             <a href="javascript:void(0);">
-                <span id="dianji_CityList"></span>
+                <span id="dianji_CityList">城市</span>
                 <span> <img src="city_qry.png"/> </span>
             </a>
         </div>

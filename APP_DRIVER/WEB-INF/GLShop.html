@@ -14,6 +14,14 @@ $(function(){
     X.html.setOverlay();
 	X.soap('<func_mode>FUNC02</func_mode>', 'ExecSqlService', 'getPicDir');
 });
+
+//判断是否从main.html跳入
+function toUrl(){
+    var tourl=X.getUrlToValues('html');
+    if(tourl=='null') window.location.href="Integral.html";
+    else window.location.href="main.html";
+}
+
 function resultList(jsonResult){
     if(X.html.connError(jsonResult)) return;
 	$('.detailBody').empty();
@@ -32,7 +40,7 @@ function resultList(jsonResult){
 
 <body>
 <div class="vehicle_top">
-  <div class="vehicle_back"><a href="javascript:void(0)" onclick="X.html.goBack();"><img src="arrow.png" width="30" height="30" longdesc="arrow.png"></a></div>
+  <div class="vehicle_back"><a href="javascript:void(0)" onclick="toUrl();"><img src="arrow.png" width="30" height="30" longdesc="arrow.png"></a></div>
   <div class="vehicle_home">
    <a href="main.html">
  	 <div><img src="tab_weixin_normal.png"></div>
