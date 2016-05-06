@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		521A9E9B1C33A21200C84E34 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A9E981C33A21200C84E34 /* Default-568h@2x.png */; };
-		521A9E9C1C33A21200C84E34 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A9E991C33A21200C84E34 /* Default.png */; };
-		521A9E9D1C33A21200C84E34 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A9E9A1C33A21200C84E34 /* Default@2x.png */; };
 		525D12191C22885900837254 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = 525D111D1C22885900837254 /* about.png */; };
 		525D121A1C22885900837254 /* aboutgl.png in Resources */ = {isa = PBXBuildFile; fileRef = 525D111E1C22885900837254 /* aboutgl.png */; };
 		525D121B1C22885900837254 /* answer.png in Resources */ = {isa = PBXBuildFile; fileRef = 525D111F1C22885900837254 /* answer.png */; };
@@ -985,7 +982,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = GUOLI;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = renda;
 				TargetAttributes = {
 					52A2E8371C17C3AC0056F305 = {
@@ -1151,7 +1148,6 @@
 				525D12F01C22885900837254 /* service5.png in Resources */,
 				525D125F1C22885900837254 /* ic_launcher.png in Resources */,
 				525D12641C22885900837254 /* icon_queding_unfocused.png in Resources */,
-				521A9E9C1C33A21200C84E34 /* Default.png in Resources */,
 				525D12FB1C22885900837254 /* star1.png in Resources */,
 				525D12FE1C22885900837254 /* startView.html in Resources */,
 				525D12731C22885900837254 /* jquery-2.1.0.js in Resources */,
@@ -1176,13 +1172,11 @@
 				525D12F11C22885900837254 /* service6.png in Resources */,
 				525D13081C22885900837254 /* tab_weixin_pressed.png in Resources */,
 				525D12DD1C22885900837254 /* s_13.png in Resources */,
-				521A9E9B1C33A21200C84E34 /* Default-568h@2x.png in Resources */,
 				525D121F1C22885900837254 /* ask.png in Resources */,
 				525D12F91C22885900837254 /* slash.png in Resources */,
 				525D12441C22885900837254 /* Fee_Score.css in Resources */,
 				525D12671C22885900837254 /* icon_search.png in Resources */,
 				525D127F1C22885900837254 /* loading.gif in Resources */,
-				521A9E9D1C33A21200C84E34 /* Default@2x.png in Resources */,
 				525D12D51C22885900837254 /* s_5.png in Resources */,
 				525D12361C22885900837254 /* dd_scroll_3.jpg in Resources */,
 				525D13111C22885900837254 /* X.css in Resources */,
@@ -1333,6 +1327,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Qiyan Chan (M2LLAQN7ZU)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qiyan Chan (M2LLAQN7ZU)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;

@@ -63,10 +63,10 @@ strong {
 }
 .div_overflow {
 	width: 100%;
-	overflow: auto;
 	height: 400px;
 	padding-bottom: 20px;
 	margin-bottom: 60px;
+    overflow: auto;
 }
 
 

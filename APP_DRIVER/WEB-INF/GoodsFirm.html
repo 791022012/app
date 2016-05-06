@@ -2,166 +2,216 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="format-detection" content="telephone=no">
-        <meta name="viewport" content="width=320,maximum-scale=1,initial-scale=1.0,minimum-scale=0.1,user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,maximum-scale=1,initial-scale=1.0,minimum-scale=0.1,user-scalable=no">
 <title>途易行</title>
 <link href="GoodsFirm.css" rel="stylesheet" type="text/css">
 <link href="X.css" rel="stylesheet" type="text/css">
-    <script src="cities.js"  type="text/javascript"></script>
 <script type="text/javascript" src="jquery-2.1.0.js"></script>
+<script src="cities.js"  type="text/javascript"></script>
 <script type="text/javascript" src="X.js"></script>
 <script type="text/javascript">
-	$(function() {
-     
-      
-      
-		$('#citys ul').delegate('li', 'click', function(e) {
-			$('#city_name').val($(this).text());
-		});
-		$('#dianji_CityList').click(function() {
-			X.city.showCitySelection(this.id,getGoods);
-		});
-     
-
-      
+  var ROWNUMBER = "0";//分页
+  //var flag=false;//判断是不是第一次加载数据
+  var num="10";//每次加载多少条数据
+  var cls = 'div_overflow';//添加div class='div_overflow'
+  
+  
+  
+  
+  $(function(){
+    
       if(X.cookie.get('iphoneversion')==6){
-      $("div.main_service_bottom").css({"bottom":"0px","position":"fixed"});
-      $(".div_overflow").css({"height":"400px","margin-bottom":"0px"});
-      };
-      
-      
-      if(X.cookie.get('iphoneversion')==4){
-      $(".div_overflow").css("height","310px");
-      
-      };
-      
-      //ipad
-      if(X.cookie.get('iphoneversion')=='ipad'){
-
-      $("div.main_service_bottom").css({"bottom":"0px","position":"fixed"});
-      $(".div_overflow").css({"height":"890px","margin-bottom":"0px"});
-      $(".main_service_bottom").css({"height":"70px"});
-      $(".main_service_bottom table tr:first-child td").css({"height":"40px"});
-      $(".main_service_bottom table img").css({"height":"40px","width":"40px"});
-      $(".main_service_bottom table tr td span").css({"height":"20px","font-size":"20px"});
+          $("div.main_service_bottom").css({"bottom":"0px","position":"fixed"});
+          $(".div_overflow").css({"height":"400px","margin-bottom":"0px"});
+          };
+          if(X.cookie.get('iphoneversion')==4){
+          $(".div_overflow").css("height","310px");
+      }
+      if(X.cookie.get('iphoneversion')=='ipad'){ //ipad
+          $("div.main_service_bottom").css({"bottom":"0px","position":"fixed"});
+          $(".div_overflow").css({"height":"890px","margin-bottom":"0px"});
+          $(".main_service_bottom").css({"height":"70px"});
+          $(".main_service_bottom table tr:first-child td").css({"height":"40px"});
+          $(".main_service_bottom table img").css({"height":"40px","width":"40px"});
+          $(".main_service_bottom table tr td span").css({"height":"20px","font-size":"20px"});
       }
       
+     
+     $("#dianji_CityList").text('城市');
+ 
+    
+    $('#citys ul').delegate('li', 'click', function(e) {
+       $('#city_name').val($(this).text());
+    });
+    
+  getGoods();
+
+ /* $('#dianji_CityList').click(function() {
+      X.city.showCitySelection(this.id,getGoods);*/
+  
+   
+});
+    
       
-      
-		//$("#dianji_CityList").text(X.isEmpty(X.cookie.get('cityname')) ? '' : X.cookie.get('cityname'));
-       // $("#dianji_CityList").text('城市');
-		getGoods();
-	});
-	function getGoods(){
-        if(X.isEmpty($('#dianji_CityList').text())) return;
-		var data = {};
-		data.USER_ID = X.cookie.get('username');
-		data.ROLE_ID = X.cookie.get('role_id');
-        data.ROWNUMBER ＝'0';
-		if($('#dianji_CityList').text()!='城市')data.CITY = $('#dianji_CityList').text();
-		X.html.setOverlay();
-		X.soap(data, 'GoodsPublishService', 'getGoods');
-        //
-	}
-	function resultList(jsonResult) {
-        if(X.html.connError(jsonResult)) return;
-		var result = jsonResult.result;
-		var cls = 'div_overflow';
-		$('.' + cls).remove();
-		if (!result instanceof Array) {
-			if (X.getObjLenOrCompare(result, 0)) {
-				var array = new Array();
-				array[0] = result;
-				result = array;
-			}
-		}
-        //判断result是否为空
-        if(result.length == 0){
-            $('.'+cls).append('<div class="divTable" style="text-align:center">未找到任何数据</div>');
-            $('.overlayX').css('display','none');
-            return false;
+
+
+
+
+function getGoods(){
+  
+ if(X.isEmpty($('#dianji_CityList').text())) return;
+    var data = {};
+    data.USER_ID = X.cookie.get('username');
+    data.ROLE_ID = X.cookie.get('role_id');
+    data.ROWNUMBER = ROWNUMBER;
+   // flag=true;//判断是第一次加载数据
+    if(($('#dianji_CityList').text())!='城市')data.CITY = $('#dianji_CityList').text();
+    X.html.setOverlay();
+    X.soap(data, 'GoodsPublishService', 'getGoods');
+
+}
+
+
+function getGoods2(ROWNUMBER){
+   
+    if(X.isEmpty($('#dianji_CityList').text())) return;
+    var data = {};
+    data.USER_ID = X.cookie.get('username');
+    data.ROLE_ID = X.cookie.get('role_id');
+    data.ROWNUMBER = ROWNUMBER;
+    if(($('#dianji_CityList').text())!='城市')data.CITY = $('#dianji_CityList').text();
+    
+    X.soap(data, 'GoodsPublishService', 'getGoods');
+    
+}
+
+
+
+function resultList(jsonResult) {
+    if(X.html.connError(jsonResult)) return;
+    var result = jsonResult.result;
+   //var cls = 'div_overflow';
+   // $('.' + cls).remove();
+    if (!result instanceof Array) {
+        if (X.getObjLenOrCompare(result, 0)) {
+            var array = new Array();
+            array[0] = result;
+            result = array;
         }
-		var divBody = $('.detailBodyModel').html();
-		if (X.isEmpty(divBody)) {
-			X.dialog('未能获取有效的数据填充区域');
-			$('.overlayX').css('display', 'none');
-			return;
-		}
-		if ($('.' + cls).length <= 0) {
-			$('body').append('<div class="'+cls+'"></div>');
-		}
-		$('.' + cls)
-				.each(
-						function() {
-							var div = $(this);
-							var date = new Date();
-							for (var i = 0; i < result.length; i++) {
-								if (!X.getObjLenOrCompare(result[i], 0))
-									continue;
-								div.append(divBody);
-								var mi = 0;
-								var m = '';
-								$('.FROM_CITY:last strong').text(
-										result[i].FROM_CITY);
-								$('.CITY:last strong').text(result[i].CITY);
-								$('.PUBLISH_TEL:last').html(
-										result[i].PUBLISH_TEL);
-								var date2 = new Date(result[i].PUBLISH_DATE
-										.substring(
-												0,
-												result[i].PUBLISH_DATE
-														.indexOf('.')).replace(
-												/-/g, '/'));
-								mi = parseInt((date.getTime() - date2.getTime()) / 1000 / 60 + 1);
-								if (mi > 60) {
-									m = m + parseInt(mi / 60) + '时' + mi % 60
-											+ '分';
-								} else if(mi > 0){
-									m = m + mi + '分';
+    }
+    //判断result是否为空
+    if(result.length == 0){
+        $('.'+cls).append('<div class="divTable" style="text-align:center">未找到任何数据</div>');
+        $('.overlayX').css('display','none');
+        return false;
+    }
+    var divBody = $('.detailBodyModel').html();
+    if (X.isEmpty(divBody)) {
+        X.dialog('未能获取有效的数据填充区域');
+        $('.overlayX').css('display', 'none');
+        return;
+    }
+
+    
+    if ($('.' + cls).length <= 0) {
+        $('body').append('<div class="'+cls+'"></div>');
+    }
+   
+
+    
+    $('.'+cls).each(function() {
+                      var div = $(this);
+                      var date = new Date();
+                      for (var i = 0; i < result.length; i++) {
+                      if (!X.getObjLenOrCompare(result[i], 0))
+                      continue;
+                      div.append(divBody);
+                      var mi = 0;
+                      var m = '';
+                      $('.FROM_CITY:last strong').text(
+                                                       result[i].FROM_CITY);
+                      $('.CITY:last strong').text(result[i].CITY);
+                      $('.PUBLISH_TEL:last').html(
+                                                  result[i].PUBLISH_TEL);
+                      var date2 = new Date(result[i].PUBLISH_DATE
+                                           .substring(0,
+                                                      result[i].PUBLISH_DATE
+                                                      .indexOf('.')).replace( /-/g, '/'));
+                      mi = parseInt((date.getTime() - date2.getTime()) / 1000 / 60 + 1);
+                      if (mi > 60) {
+                      m = m + parseInt(mi / 60) + '时' + mi % 60+ '分';
+                      } else if(mi > 0){
+                      m = m + mi + '分';
                       }else{
-                        m = m + '0分';
+                      m = m + '0分';
                       }
-								m = m + ' 前';
-								$('.TO_DATE:last').html(m);
-								$('.GOODS_TYPE_NAME:last')
-										.html(
-												'  '
-														+ (X
-																.isEmpty(result[i].GOODS_TYPE_NAME) ? '  '
-																: result[i].GOODS_TYPE_NAME)
-														+ '/'
-														+ (X
-																.isEmpty(result[i].BIZ_TYPE_NAME) ? '  '
-																: result[i].BIZ_TYPE_NAME)
-														+ '/'
-														+ (X
-																.isEmpty(result[i].VEHICLE_TYPE_NAME) ? '  '
-																: result[i].VEHICLE_TYPE_NAME)
-														+ '/'
-														+ (X
-																.isEmpty(result[i].GOODS_NAME) ? '  '
-																: result[i].GOODS_NAME));
-								$('.NOTES:last').html(result[i].NOTES);
-							}
-						});
-                        $('.PUBLISH_TEL').click(function(){
-                                                clickFlag = false;
-                                                X.call($(this).text());
-                                                });
-		$('.overlayX').css('display', 'none');
-	}
+                      m = m + ' 前';
+                      $('.TO_DATE:last').html(m);
+                      $('.GOODS_TYPE_NAME:last')
+                      .html(
+                            '  '
+                            + (X
+                               .isEmpty(result[i].GOODS_TYPE_NAME) ? '  '
+                               : result[i].GOODS_TYPE_NAME)
+                            + '/'
+                            + (X
+                               .isEmpty(result[i].BIZ_TYPE_NAME) ? '  '
+                               : result[i].BIZ_TYPE_NAME)
+                            + '/'
+                            + (X
+                               .isEmpty(result[i].VEHICLE_TYPE_NAME) ? '  '
+                               : result[i].VEHICLE_TYPE_NAME)
+                            + '/'
+                            + (X
+                               .isEmpty(result[i].GOODS_NAME) ? '  '
+                               : result[i].GOODS_NAME));
+                      $('.NOTES:last').html(result[i].NOTES);
+                      }
+                      });
+                      $('.PUBLISH_TEL').click(function(){
+                                              clickFlag = false;
+                                              X.call($(this).text());
+                                              });
+                                   
+      $('.overlayX').css('display', 'none');
+     
+    
+    $(".div_overflow").css({"overflow":"scroll"});
+    $(".div_overflow").scroll(function() {
+      var $this =$(this),
+      viewH =$(this).height(),//可见高度
+      contentH =$(this).get(0).scrollHeight,//内容高度
+      scrollTop =$(this).scrollTop();//滚动高度
+      
+  if(scrollTop/(contentH -viewH)>=0.95){ //到达底部100px时,加载新内容
+                           
+         X.html.setOverlay();
+         
+          // setTimeout(function(){
+              var las_number = Number(ROWNUMBER) + Number(num);
+              ROWNUMBER=las_number;
+              getGoods2(ROWNUMBER);
+                             
+            //}, 2000);
+                              
+        
+      }
 
-	/*function MM_goToURL() { //v3.0
-		var i, args = MM_goToURL.arguments;
-		document.MM_returnValue = false;
-		for (i = 0; i < (args.length - 1); i += 2)
-			eval(args[i] + ".location='" + args[i + 1] + "'");
-	}*/
+                              
+    });//滚动事件结束
 
-	function shouye() {
-		window.location.href = "main.html";
-	}
-	function fuwu() {
+//
+}
+
+
+
+
+
+function shouye() {
+    window.location.href = "main.html";
+}
+function fuwu() {
 		window.location.href = "main_Service.html";
 	}
 	function zhaohuo() {
@@ -170,6 +220,7 @@
 	function wode() {
 		window.location.href = "Integral.html";
 	}
+
 
 </script>
 </head>
@@ -194,7 +245,7 @@
 	<div class="div_duan"></div>
 
 	<!--司机信息_查询后显示的页面-->
-    <div class="div_overflow"></div>
+
 	<div class="detailBodyModel" hidden="hidden" >
 		<div class="divTable">
 			<div class="divTable_tr1">

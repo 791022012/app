@@ -78,6 +78,7 @@ soap:function(data,serviceAction,action,href){
     if(!X.isEmpty(href)){
         url = url + '//' + href;
     }
+  //  alert(url);//检查 输入的条件参数
     window.location = url;
 },
 //调用IOS相册
