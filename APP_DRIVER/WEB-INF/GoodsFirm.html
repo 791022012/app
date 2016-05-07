@@ -12,12 +12,8 @@
 <script type="text/javascript" src="X.js"></script>
 <script type="text/javascript">
   var ROWNUMBER = "0";//分页
-  //var flag=false;//判断是不是第一次加载数据
   var num="10";//每次加载多少条数据
-  var cls = 'div_overflow';//添加div class='div_overflow'
-  
-  
-  
+  var flag=false;//判断返回数据是否为空
   
   $(function(){
     
@@ -49,8 +45,11 @@
 
  /* $('#dianji_CityList').click(function() {
       X.city.showCitySelection(this.id,getGoods);*/
-  
-   
+    
+    
+    
+    
+    
 });
     
       
@@ -65,7 +64,6 @@ function getGoods(){
     data.USER_ID = X.cookie.get('username');
     data.ROLE_ID = X.cookie.get('role_id');
     data.ROWNUMBER = ROWNUMBER;
-   // flag=true;//判断是第一次加载数据
     if(($('#dianji_CityList').text())!='城市')data.CITY = $('#dianji_CityList').text();
     X.html.setOverlay();
     X.soap(data, 'GoodsPublishService', 'getGoods');
@@ -91,7 +89,7 @@ function getGoods2(ROWNUMBER){
 function resultList(jsonResult) {
     if(X.html.connError(jsonResult)) return;
     var result = jsonResult.result;
-   //var cls = 'div_overflow';
+    var cls = 'div_overflow';
    // $('.' + cls).remove();
     if (!result instanceof Array) {
         if (X.getObjLenOrCompare(result, 0)) {
@@ -100,12 +98,7 @@ function resultList(jsonResult) {
             result = array;
         }
     }
-    //判断result是否为空
-    if(result.length == 0){
-        $('.'+cls).append('<div class="divTable" style="text-align:center">未找到任何数据</div>');
-        $('.overlayX').css('display','none');
-        return false;
-    }
+  
     var divBody = $('.detailBodyModel').html();
     if (X.isEmpty(divBody)) {
         X.dialog('未能获取有效的数据填充区域');
@@ -113,96 +106,108 @@ function resultList(jsonResult) {
         return;
     }
 
-    
-    if ($('.' + cls).length <= 0) {
-        $('body').append('<div class="'+cls+'"></div>');
-    }
-   
+        //判断result是否为空
+    if(result.length == 0){
+            $('.overlayX').css('display','none');
+            flag=true;//判断返回结果
+            if ($('#NoData').length <= 0) {
+               $('.'+cls).append('<div id="NoData" class="NoData" >未找到更多的数据</div>');
+            }
+            setTimeout(function(){
+              $('#NoData').remove();
+            }, 5000);
+            return false;
+    }else{
+        if ($('.' + cls).length <= 0) {
+            $('body').append('<div class="'+cls+'"></div>');
+            //分页 当创建 div时 就添加监听
+            $(".div_overflow").css({"overflow":"scroll"});
+            $(".div_overflow").scroll(function() {
+              var $this =$(this),
+              viewH =$(this).height(),//可见高度
+              contentH =$(this).get(0).scrollHeight,//内容高度
+              scrollTop =$(this).scrollTop();//滚动高度
+              
+              if(scrollTop/(contentH -viewH)>=0.95){ //到达底部100px时,加载新内容
+                if(!flag){
+                  X.html.setOverlay();
+                  setTimeout(function(){
+                    var las_number = Number(ROWNUMBER) + Number(num);
+                    ROWNUMBER=las_number;
+                    getGoods2(ROWNUMBER);
+                  }, 1000);
+                }
+                  
+               }
+              
+              
+             });//滚动事件结束
+            
+        }
+       
 
-    
-    $('.'+cls).each(function() {
-                      var div = $(this);
-                      var date = new Date();
-                      for (var i = 0; i < result.length; i++) {
-                      if (!X.getObjLenOrCompare(result[i], 0))
-                      continue;
-                      div.append(divBody);
-                      var mi = 0;
-                      var m = '';
-                      $('.FROM_CITY:last strong').text(
-                                                       result[i].FROM_CITY);
-                      $('.CITY:last strong').text(result[i].CITY);
-                      $('.PUBLISH_TEL:last').html(
-                                                  result[i].PUBLISH_TEL);
-                      var date2 = new Date(result[i].PUBLISH_DATE
-                                           .substring(0,
-                                                      result[i].PUBLISH_DATE
-                                                      .indexOf('.')).replace( /-/g, '/'));
-                      mi = parseInt((date.getTime() - date2.getTime()) / 1000 / 60 + 1);
-                      if (mi > 60) {
-                      m = m + parseInt(mi / 60) + '时' + mi % 60+ '分';
-                      } else if(mi > 0){
-                      m = m + mi + '分';
-                      }else{
-                      m = m + '0分';
-                      }
-                      m = m + ' 前';
-                      $('.TO_DATE:last').html(m);
-                      $('.GOODS_TYPE_NAME:last')
-                      .html(
-                            '  '
-                            + (X
-                               .isEmpty(result[i].GOODS_TYPE_NAME) ? '  '
-                               : result[i].GOODS_TYPE_NAME)
-                            + '/'
-                            + (X
-                               .isEmpty(result[i].BIZ_TYPE_NAME) ? '  '
-                               : result[i].BIZ_TYPE_NAME)
-                            + '/'
-                            + (X
-                               .isEmpty(result[i].VEHICLE_TYPE_NAME) ? '  '
-                               : result[i].VEHICLE_TYPE_NAME)
-                            + '/'
-                            + (X
-                               .isEmpty(result[i].GOODS_NAME) ? '  '
-                               : result[i].GOODS_NAME));
-                      $('.NOTES:last').html(result[i].NOTES);
-                      }
-                      });
-                      $('.PUBLISH_TEL').click(function(){
-                                              clickFlag = false;
-                                              X.call($(this).text());
-                                              });
-                                   
-      $('.overlayX').css('display', 'none');
-     
-    
-    $(".div_overflow").css({"overflow":"scroll"});
-    $(".div_overflow").scroll(function() {
-      var $this =$(this),
-      viewH =$(this).height(),//可见高度
-      contentH =$(this).get(0).scrollHeight,//内容高度
-      scrollTop =$(this).scrollTop();//滚动高度
-      
-  if(scrollTop/(contentH -viewH)>=0.95){ //到达底部100px时,加载新内容
-                           
-         X.html.setOverlay();
-         
-          // setTimeout(function(){
-              var las_number = Number(ROWNUMBER) + Number(num);
-              ROWNUMBER=las_number;
-              getGoods2(ROWNUMBER);
-                             
-            //}, 2000);
-                              
         
-      }
+        $('.'+cls).each(function() {
+                          var div = $(this);
+                          var date = new Date();
+                          for (var i = 0; i < result.length; i++) {
+                          if (!X.getObjLenOrCompare(result[i], 0))
+                          continue;
+                          div.append(divBody);
+                          var mi = 0;
+                          var m = '';
+                          $('.FROM_CITY:last strong').text(
+                                                           result[i].FROM_CITY);
+                          $('.CITY:last strong').text(result[i].CITY);
+                          $('.PUBLISH_TEL:last').html(
+                                                      result[i].PUBLISH_TEL);
+                          var date2 = new Date(result[i].PUBLISH_DATE
+                                               .substring(0,
+                                                          result[i].PUBLISH_DATE
+                                                          .indexOf('.')).replace( /-/g, '/'));
+                          mi = parseInt((date.getTime() - date2.getTime()) / 1000 / 60 + 1);
+                          if (mi > 60) {
+                          m = m + parseInt(mi / 60) + '时' + mi % 60+ '分';
+                          } else if(mi > 0){
+                          m = m + mi + '分';
+                          }else{
+                          m = m + '0分';
+                          }
+                          m = m + ' 前';
+                          $('.TO_DATE:last').html(m);
+                          $('.GOODS_TYPE_NAME:last')
+                          .html(
+                                '  '
+                                + (X
+                                   .isEmpty(result[i].GOODS_TYPE_NAME) ? '  '
+                                   : result[i].GOODS_TYPE_NAME)
+                                + '/'
+                                + (X
+                                   .isEmpty(result[i].BIZ_TYPE_NAME) ? '  '
+                                   : result[i].BIZ_TYPE_NAME)
+                                + '/'
+                                + (X
+                                   .isEmpty(result[i].VEHICLE_TYPE_NAME) ? '  '
+                                   : result[i].VEHICLE_TYPE_NAME)
+                                + '/'
+                                + (X
+                                   .isEmpty(result[i].GOODS_NAME) ? '  '
+                                   : result[i].GOODS_NAME));
+                          $('.NOTES:last').html(result[i].NOTES);
+                          }
+                          });
+                          $('.PUBLISH_TEL').click(function(){
+                                                  clickFlag = false;
+                                                  X.call($(this).text());
+                                                  });
+                                       
+          $('.overlayX').css('display', 'none');
+         
 
-                              
-    });//滚动事件结束
+    }//判断 返回结果是否为空 结束
 
-//
-}
+
+}//方法结束
 
 
 
